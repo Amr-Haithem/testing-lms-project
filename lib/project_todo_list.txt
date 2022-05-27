@@ -1,0 +1,12 @@
+1) make representation of all screens and the functionalities required (done)
+2) watch a video of making an sqflite database
+3) make sign in UI
+4) finish studying sql statements in database subject
+5) implement all constants in database
+6) implement sign in authentication by searching in these constants
+7) implement student screen
+8) implement implement instructor screen
+
+
+
+

@@ -1,0 +1,10 @@
+students and instructors are pre stored in db
+courses for each year are pre stored
+
+signed in student can:
+	-register in available course for his university level
+	-check content of course
+	-take quiz
+signed in instructor can:
+	-put quiz
+	-send course content as text
