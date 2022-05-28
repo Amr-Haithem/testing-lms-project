@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../BL/cubit/authentication_cubit.dart';
+import 'package:testing_project/data/local_db/lms_db.dart';
+import '../BL/cubit/authentication_cubit/authentication_cubit.dart';
 import 'freq_used_widgets/funky_overlay.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({ Key? key }) : super(key: key);
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-    late String email = "", password = "";
+  LmsDB lmsInstance = LmsDB();
+  dynamic db;
+
+  late String email = "", password = "";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -31,10 +35,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     borderSide: BorderSide(color: Colors.black, width: 1.5),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color:  Colors.black),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color:  Colors.black)),
+                      borderSide: BorderSide(color: Colors.black)),
                   hintText: "Email"),
               autofocus: true,
               validator: (value) {
@@ -49,9 +53,9 @@ class _SignInScreenState extends State<SignInScreen> {
               onChanged: (val) {
                 password = val;
               },
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color:Colors.black54, width: 1.5),
+                    borderSide: BorderSide(color: Colors.black54, width: 1.5),
                   ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black54),
@@ -73,6 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+
   Widget _showPopUpMessageIfTheresError(AuthenticationState state) {
     if (state is AuthenticationLoadingError) {
       Future.delayed(const Duration(milliseconds: 0), () {
@@ -89,12 +94,13 @@ class _SignInScreenState extends State<SignInScreen> {
       return const SizedBox();
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    
-   return BlocBuilder<AuthenticationCubit, AuthenticationState>(
+    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
       builder: (context, state) {
-        if (state is AuthenticationLoaded || state is AuthenticationLoadingError) {
+        if (state is AuthenticationLoaded ||
+            state is AuthenticationLoadingError) {
           return Scaffold(
               appBar: AppBar(
                 title: const Text("Sign in"),
@@ -106,47 +112,28 @@ class _SignInScreenState extends State<SignInScreen> {
                   _buildTextFields(),
                   ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.black),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        await lmsInstance.deleteDatabase('lms.db');
+                        db = await lmsInstance.database;
+                        lmsInstance.testFunction(db);
                         //the following make sure that the user typed any thing in the fields
-                        if (_formKey.currentState!.validate()) {
-                         
-                        }
+                        if (_formKey.currentState!.validate()) {}
                       },
                       child: const Text(
                         'sign in',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       )),
                   _showPopUpMessageIfTheresError(state)
                 ],
               ));
         } else {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
       },
-   );
-        
-      }
+    );
+  }
 }
-    
-  
-
-
-/*
-class _SignInScreenState extends State<SignInScreen> {
-  @override
-  void initState() {
-    BlocProvider.of<UserdataCubit>(context).notifyLoadingExistingUserData();
-    super.initState();
-  }
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
-      builder: (context, state) {
-  }
-}*/
