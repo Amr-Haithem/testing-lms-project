@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:testing_project/data/repository/professor_sink_repo.dart';
 
+import '../../../../data/local_db/professor_sink.dart';
 import '../../../../data/models/course.dart';
 import '../../../../data/models/excersize.dart';
 
@@ -11,7 +12,7 @@ class ProfessorFunctionalitiesQuestionsCubit
     extends Cubit<ProfessorFunctionalitiesQuestionsState> {
   ProfessorFunctionalitiesQuestionsCubit()
       : super(ProfessorFunctionalitiesQuestionsInitial());
-  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo();
+  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo(professorSink: ProfessorSink());
   void getCourseExcersizes(Course course) {
     emit(ProfessorFunctionalitiesQuestionsLoading());
     _professorSinkRepo.getCourseExcersizes(course).then((excersizes) {

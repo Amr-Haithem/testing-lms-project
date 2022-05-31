@@ -42,9 +42,10 @@ class StudentSink {
         where: _queryEnrollmentsGetterForGetStudentCourses(enrollments));
   }
 
-  Future<List<Map<String, Object?>>> getAllCourses() async {
+  Future<List<Map<String, Object?>>> getAllCourses() async { 
     Database db = await _lmsDB.database;
     return await db.query('Course');
+  
   }
 
   Future<void> registerCoursesForAStudent(

@@ -5,10 +5,13 @@ import 'package:testing_project/data/models/professor.dart';
 import 'package:testing_project/data/models/student.dart';
 
 class ProfessorSinkRepo {
-  final ProfessorSink _professorSink = ProfessorSink();
+  final ProfessorSink professorSink;
+
+  ProfessorSinkRepo({required this.professorSink});
+
   Future<List<Professor>> getProfessor(String userName, String password) async {
     List<Map<String, Object?>> rawProfessors =
-        await _professorSink.getProfessor(userName, password);
+        await professorSink.getProfessor(userName, password);
     List<Professor> professors = [];
     for (var professor in rawProfessors) {
       professors.add(Professor(
@@ -22,7 +25,7 @@ class ProfessorSinkRepo {
 
   Future<List<Course>> getProfessorCourses(Professor professor) async {
     List<Map<String, Object?>> rawCourses =
-        await _professorSink.getCoursesOfProfessor(professor);
+        await professorSink.getCoursesOfProfessor(professor);
     List<Course> courses = [];
     for (var course in rawCourses) {
       courses.add(Course(
@@ -36,15 +39,16 @@ class ProfessorSinkRepo {
 
   Future<String> getCourseContent(Professor professor, Course course) async {
     List<Map<String, Object?>> listOfContents =
-        await _professorSink.getCourseContent(professor, course);
+        await professorSink.getCourseContent(professor, course);
 
     //todo => is this hard coding efficient a good practice?
     return listOfContents[0]['content'] as String;
   }
 
-  Future<List<Excersize>> getCourseExcersizes(Course course) async {
+  Future<List<Excersize>> getCourseExcersizes(
+      Course course) async {
     List<Map<String, Object?>> rawExcersizes =
-        await _professorSink.getCourseExcersizes(course);
+        await professorSink.getCourseExcersizes(course);
     List<Excersize> excersizes = [];
     rawExcersizes.forEach((excersize) {
       excersizes.add(Excersize(

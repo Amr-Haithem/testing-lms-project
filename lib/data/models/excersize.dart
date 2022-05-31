@@ -1,4 +1,6 @@
-class Excersize {
+import 'package:equatable/equatable.dart';
+
+class Excersize with EquatableMixin{
   int id;
   String question;
   int answer;
@@ -9,4 +11,8 @@ class Excersize {
     required this.answer,
     required this.courseId,
   });
+  @override
+  List<Object> get props {
+    return [id, question, answer, courseId];
+  }
 }

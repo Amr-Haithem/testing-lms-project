@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:testing_project/data/local_db/professor_sink.dart';
 import 'package:testing_project/data/repository/professor_sink_repo.dart';
 
 import '../../../../data/models/course.dart';
@@ -11,7 +12,7 @@ class ProfessorFunctionalitiesContentCubit
     extends Cubit<ProfessorFunctionalitiesContentState> {
   ProfessorFunctionalitiesContentCubit()
       : super(ProfessorFunctionalitiesContentInitial());
-  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo();
+  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo(professorSink: ProfessorSink());
 
   void getCourseContent(Professor professor, Course course) async {
     emit(ProfessorFunctionalitiesContentLoading());

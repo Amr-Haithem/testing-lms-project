@@ -3,13 +3,14 @@ import 'package:meta/meta.dart';
 import 'package:testing_project/data/models/student.dart';
 import 'package:testing_project/data/repository/student_sink_repo.dart';
 
+import '../../../data/local_db/student_sink.dart';
 import '../../../data/models/course.dart';
 
 part 'student_courses_state.dart';
 
 class StudentCoursesCubit extends Cubit<StudentCoursesState> {
   StudentCoursesCubit() : super(StudentCoursesInitial());
-  final StudentSinkRepo _studentSinkRepo = StudentSinkRepo();
+  final StudentSinkRepo _studentSinkRepo = StudentSinkRepo(studentSink: StudentSink());
 
   void getStudentCourses(Student student) {
     emit(StudentCoursesLoading());

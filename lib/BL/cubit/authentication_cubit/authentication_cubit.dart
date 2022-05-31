@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:testing_project/data/local_db/student_sink.dart';
 import 'package:testing_project/data/repository/professor_sink_repo.dart';
 import 'package:testing_project/data/repository/student_sink_repo.dart';
+
+import '../../../data/local_db/professor_sink.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(AuthenticationInitial());
-  final StudentSinkRepo _studentSinkRepo = StudentSinkRepo();
-  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo();
+  final StudentSinkRepo _studentSinkRepo = StudentSinkRepo(studentSink: StudentSink());
+  final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo(professorSink: ProfessorSink());
   
   void authenticateUser(String userName, String password) {
     emit(AuthenticationLoading());
