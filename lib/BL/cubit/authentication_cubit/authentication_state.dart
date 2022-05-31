@@ -4,6 +4,7 @@ part of 'authentication_cubit.dart';
 abstract class AuthenticationState {}
 
 class AuthenticationLoading extends AuthenticationState {}
+class AuthenticationInitial extends AuthenticationState {}
 
 class AuthenticationLoaded extends AuthenticationState {
   final bool student;

@@ -13,7 +13,6 @@ class LmsDB {
 
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
-    print(dbPath);
     final path = join(dbPath, fileName);
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -25,7 +24,7 @@ class LmsDB {
   }
 
   Future _intializeConstants(Database db) async {
-   await _sqlStatementsExecuter(db, [
+    await _sqlStatementsExecuter(db, [
       '''
 INSERT INTO Student(name,student_id,user_name,password) VALUES
  ('amr haithem',0,'amr','amor'),
@@ -44,24 +43,49 @@ INSERT INTO Student(name,student_id,user_name,password) VALUES
  ('Advanced programming','no content yet',4,1),
  ('Embedded systems','no content yet',5,1),
  ('Literature and love','no content yet',6,0);
+''',
+      '''
+ INSERT INTO Excersize(question,answer,ex_id,course_id) VALUES
+
+
+ ('set a question',false,0,0),
+ ('set a question',false,1,0),
+ ('set a question',false,2,0),
+ 
+ ('set a question',false,3,1),
+ ('set a question',false,4,1),
+ ('set a question',false,5,1),
+
+ ('set a question',false,6,2),
+ ('set a question',false,7,2),
+ ('set a question',false,8,2),
+
+ ('set a question',false,9,3),
+ ('set a question',false,10,3),
+ ('set a question',false,11,3),
+
+ ('set a question',false,12,4),
+ ('set a question',false,13,4),
+ ('set a question',false,14,4),
+
+ ('set a question',false,15,5),
+ ('set a question',false,16,5),
+ ('set a question',false,17,5),
+
+ ('set a question',false,18,6),
+ ('set a question',false,19,6),
+ ('set a question',false,20,6)
 '''
     ]);
   }
 
-  Future testFunction(Database db) async {
-    dynamic data = await db.query('Course');
-    print(data);
-  }
-
   Future<void> deleteDatabase(String databaseName) async {
     final dbPath = await getDatabasesPath();
-
     final path = join(dbPath, databaseName);
     await databaseFactory.deleteDatabase(path);
   }
 
   Future _createDB(Database db, int version) async {
-    print('meow');
     await _sqlStatementsExecuter(db, [
       '''CREATE TABLE Student
 (
@@ -95,13 +119,14 @@ CREATE TABLE Course
 CREATE TABLE Excersize
 (
   question VARCHAR(255) NOT NULL,
-  answer VARCHAR(255) NOT NULL,
+  answer BOOLEAN NOT NULL,
   ex_id INT NOT NULL,
   course_id INT NOT NULL,
   PRIMARY KEY (ex_id),
   FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
-
+''',
+      '''
 CREATE TABLE enrolled_student_course
 (
   quiz_grade INT NOT NULL,

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testing_project/BL/cubit/authentication_cubit/authentication_cubit.dart';
+import 'package:testing_project/app_router.dart';
 import 'package:testing_project/presentation/signIn.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp(appRouter: AppRouter(),));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.appRouter}) : super(key: key);
+  final AppRouter appRouter;
 
   // This widget is the root of your application.
   @override
@@ -18,10 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider(
-        create: (context) => AuthenticationCubit(),
-        child: const SignInScreen(),
-      ),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: appRouter.generateRoute,
+      
     );
   }
 }

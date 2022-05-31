@@ -5,16 +5,17 @@ import 'package:testing_project/data/repository/student_sink_repo.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit() : super(AuthenticationLoading());
+  AuthenticationCubit() : super(AuthenticationInitial());
   final StudentSinkRepo _studentSinkRepo = StudentSinkRepo();
   final ProfessorSinkRepo _professorSinkRepo = ProfessorSinkRepo();
-
+  
   void authenticateUser(String userName, String password) {
+    emit(AuthenticationLoading());
     _studentSinkRepo.getStudents(userName, password).then((value) {
       if (value.isEmpty) {
         _professorSinkRepo.getProfessor(userName, password).then((value) {
           if (value.isEmpty) {
-           emit(AuthenticationLoadingError(message: "user not found"));
+            emit(AuthenticationLoadingError(message: "user not found"));
           } else {
             emit(AuthenticationLoaded(
                 student: false, studentOrProfessor: value[0]));
