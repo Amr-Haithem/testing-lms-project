@@ -105,7 +105,4 @@ void main() {
       Course(id: 1, name: "el 7ob", content: "ortoo", profId: 3)
     ]);
   });
-  // test("getting courses for a specific professor", () {
-  //   professorSinkRepo.getProfessorCourses(professor, _professorSink);
-  // });
 }

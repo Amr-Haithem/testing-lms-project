@@ -12,6 +12,7 @@ class ProfessorSink {
         where: '''user_name= '$userName' AND password = '$password' ''');
   }
 
+
   Future<List<Map<String, Object?>>> getCoursesOfProfessor(
       Professor professor) async {
     Database db = await _lmsDB.database;

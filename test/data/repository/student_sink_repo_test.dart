@@ -9,7 +9,7 @@ import 'package:testing_project/data/repository/student_sink_repo.dart';
 class MockStudentSink extends Mock implements StudentSink {
   @override
   Future<List<Map<String, Object?>>> getAllCourses() {
-    return Future.delayed(Duration(seconds: 0), () {
+    return Future.delayed(const Duration(seconds: 0), () {
       return [
         {"course_id": 0, "name": "math", "content": "matheto", "prof_id": 58},
         {"course_id": 1, "name": "el dobb", "content": "dobbo", "prof_id": 588}
@@ -51,9 +51,6 @@ class MockStudentSink extends Mock implements StudentSink {
         }
       ];
     });
-
-    // Course(id: 0, name: "courseto", content: "contenteto", profId: 3),
-    // Course(id: 1, name: "el 7ob", content: "ortoo", profId: 3)
   }
 }
 
@@ -61,26 +58,26 @@ void main() {
   StudentSinkRepo studentSinkRepo =
       StudentSinkRepo(studentSink: MockStudentSink());
 
-  test(("getting all available courses for a student"), () {
-    expect(studentSinkRepo.getAllCourses(), [
+  test("getting all available courses for a student", () async {
+    expect(await studentSinkRepo.getAllCourses(), [
       Course(id: 0, name: "math", content: "matheto", profId: 58),
       Course(id: 1, name: "el dobb", content: "dobbo", profId: 588)
     ]);
   });
 
-  test(("getting a student object"), () {
-    expect(
-        studentSinkRepo.getStudents("amor el amor", "pawwordooooo"),
-        [Student(
-            id: 78,
-            name: "amr haithem",
-            userName: "amor el amor",
-            password: "pawwordooooo")]);
+  test("getting a student object", () async {
+    expect(await studentSinkRepo.getStudents("amor el amor", "pawwordooooo"), [
+      Student(
+          id: 78,
+          name: "amr haithem",
+          userName: "amor el amor",
+          password: "pawwordooooo")
+    ]);
   });
 
-  test(("getting courses for one student"), () {
+  test("getting courses for one student", () async {
     expect(
-        studentSinkRepo.getStudentCourses(Student(
+        await studentSinkRepo.getStudentCourses(Student(
             id: 0, name: "name", userName: "userName", password: "password")),
         [
           Course(
