@@ -10,7 +10,6 @@ class LmsDB {
     _database = await _initDB('lms.db');
     return _database!;
   }
-
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
@@ -46,7 +45,6 @@ INSERT INTO Student(name,student_id,user_name,password) VALUES
 ''',
       '''
  INSERT INTO Excersize(question,answer,ex_id,course_id) VALUES
-
 
  ('set a question',false,0,0),
  ('set a question',false,1,0),
@@ -128,7 +126,7 @@ CREATE TABLE Excersize
 ''',
       '''
 CREATE TABLE enrolled_student_course
-(
+( 
   quiz_grade INT NOT NULL,
   student_id INT NOT NULL,
   course_id INT NOT NULL,

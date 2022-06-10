@@ -73,7 +73,7 @@ void main() {
     Course course =
         Course(id: 0, name: "vibration an waves", content: "NA", profId: 0);
 
-    expect(await professorSinkRepo.getCourseContent(professor, course), "meow");
+    expect(await professorSinkRepo.getCourseContent(professor, course), "mocked content");
   });
 
 

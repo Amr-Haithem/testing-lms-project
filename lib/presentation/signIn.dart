@@ -4,7 +4,14 @@ import 'package:testing_project/constants/urls.dart';
 import 'package:testing_project/data/local_db/lms_db.dart';
 import 'package:testing_project/data/local_db/professor_sink.dart';
 import '../BL/cubit/authentication_cubit/authentication_cubit.dart';
+import '../constants/colors.dart';
+import '../constants/measures.dart';
 import 'freq_used_widgets/funky_overlay.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
+import 'package:testing_project/presentation/freq_used_widgets/button_widget.dart';
+import 'package:testing_project/presentation/freq_used_widgets/bottom_sheet.dart';
+import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -31,18 +38,18 @@ class _SignInScreenState extends State<SignInScreen> {
               },
               decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.5),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: BorderSide(color: mainBlack),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  hintText: "userName"),
+                      borderSide: BorderSide(color: mainBlack)),
+                  hintText: "username"),
               autofocus: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your userName';
+                  return 'Please enter your username';
                 }
                 return null;
               },
@@ -54,13 +61,13 @@ class _SignInScreenState extends State<SignInScreen> {
               },
               decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54, width: 1.5),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black54),
+                    borderSide: BorderSide(color: mainBlack),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black54)),
+                      borderSide: BorderSide(color: mainBlack)),
                   hintText: "password"),
               autofocus: true,
               validator: (value) {
@@ -70,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 return null;
               },
             ),
-            const SizedBox(height: 30)
+          //  const SizedBox(height: 30)
           ],
         ),
       ),
@@ -103,32 +110,48 @@ class _SignInScreenState extends State<SignInScreen> {
           if (state is AuthenticationInitial ||
               state is AuthenticationLoadingError) {
             return Scaffold(
-                appBar: AppBar(
-                  title: const Text("Sign in"),
-                  backgroundColor: Colors.black,
+                // appBar: AppBar(
+                //   title: Center(child: const Text("Eng ASU LMS")),
+                //   backgroundColor: Colors.black,
+                // ),
+
+                body: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                   runSpacing: defaultPadding,
+                    children: [
+                  // child: Wrap(
+                  //   direction: Axis.horizontal,
+                  //   spacing: 20,
+                  //   runSpacing: 0,
+
+                    // children: [
+                   //   SizedBox(height: defaultPadding),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: defaultPadding*4),
+                        child: Image.network('https://eng.asu.edu.eg/img/logo.png'),
+                      ),
+
+
+                      _buildTextFields(),
+
+                      ButtonWidget(
+                      onClicked: () async {
+                             // _lmsDB.deleteDatabase("lms.db");
+                              if (_formKey.currentState!.validate()) {
+                                BlocProvider.of<AuthenticationCubit>(context)
+                                    .authenticateUser(userName, password);
+                              }
+                            },
+                            text: 'Sign in',
+                    ),
+                      ],
+                    ),
                 ),
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTextFields(),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                        ),
-                        onPressed: () async {
-                          _lmsDB.deleteDatabase("lms.db");
-                          if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<AuthenticationCubit>(context)
-                                .authenticateUser(userName, password);
-                          }
-                        },
-                        child: const Text(
-                          'sign in',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ],
-                ));
+                );
           } else {
             return const Scaffold(
                 body: Center(child: CircularProgressIndicator()));
@@ -138,3 +161,4 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+

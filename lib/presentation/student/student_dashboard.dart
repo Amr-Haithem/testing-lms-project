@@ -3,12 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testing_project/BL/cubit/student_courses_cubit/student_courses_cubit.dart';
 import 'package:testing_project/BL/cubit/student_functionalities_cubit/student_funcationalities_cubit.dart';
 import 'package:testing_project/constants/colors.dart';
+import 'package:testing_project/constants/measures.dart';
 import 'package:testing_project/constants/urls.dart';
 import 'package:testing_project/data/models/student.dart';
 
 import '../../data/models/course.dart';
 import '../freq_used_widgets/course_box.dart';
 import '../freq_used_widgets/funky_overlay.dart';
+import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
+import 'package:testing_project/presentation/freq_used_widgets/button_widget.dart';
+import 'package:testing_project/presentation/freq_used_widgets/bottom_sheet.dart';
+import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
 
 class StudentDashBoard extends StatefulWidget {
   final Student student;
@@ -63,89 +68,97 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: darkGrey,
-          title: const Center(child: Text('dashboard')),
-        ),
+        appBar: buildAppBar(context, "Dashboard"),
         body: SizedBox(
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('My credentials'),
-              Container(
-                height: height * .2,
-                width: width * .8,
-                child: const Text("data here"),
-                color: darkGrey,
-              ),
-              const Text('My courses'),
-              MultiBlocListener(
-                listeners: [
-                  BlocListener<StudentCoursesCubit, StudentCoursesState>(
-                    listener: (context, state) {
-                      if (state is StudentCoursesLoaded) {
-                        if (state.courses.isEmpty) {
-                          BlocProvider.of<StudentCoursesCubit>(context)
-                              .getAllCourses();
-                        }
-                      }
-                    },
-                  ),
-                  BlocListener<StudentFuncationalitiesCubit,
-                      StudentFuncationalitiesState>(
-                    listener: (context, state) {
-                      if (state
-                          is StudentFuncationalitiesRegisteringCoursesLoaded) {
-                        BlocProvider.of<StudentCoursesCubit>(context)
-                            .getStudentCourses(widget.student);
-                      }
-                    },
-                  ),
-                ],
-                child: BlocBuilder<StudentCoursesCubit, StudentCoursesState>(
-                  builder: (context, state) {
-                    if (state is StudentCoursesToChooseLoaded) {
-                      return Container(
-                          child: registerCourseWidget(
-                              widget.student, state.courses, width));
-                    } else if (state is StudentCoursesToChooseLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is StudentCoursesToChooseError) {
-                      return const Center(
-                        child: Text("error"),
-                      );
-                    }
-                    if (state is StudentCoursesLoaded) {
-                      List<CourseBox> courseBoxes = [];
+          child: Padding(
+            padding: const EdgeInsets.all(defaultPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-                      for (var course in state.courses) {
-                        courseBoxes.add(CourseBox(
-                          course: course,
-                          onTap: () {
-                            Navigator.pushNamed(context, insideCourseStudent,
-                                arguments: [widget.student, course]);
-                          },
-                        ));
-                      }
-                      return Wrap(
-                        spacing: 20,
-                        runSpacing: 20,
-                        direction: Axis.horizontal,
-                        children: courseBoxes,
-                      );
-                    } else if (state is StudentCoursesLoading ||
-                        state is StudentCoursesInitial) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return const Center(child: Text("error"));
-                    }
-                  },
+              children: [
+
+                const SizedBox(height: defaultPadding,),
+
+                Center(child: ButtonWidget(text: "See performance report", onClicked: (){},)),
+
+              //  const SizedBox(height: defaultPadding,),
+             //   const Text('My credentials:',   style: TextStyle(fontWeight: FontWeight.bold,),),
+               // const SizedBox(height: defaultPadding,),
+
+                const SizedBox(height: defaultPadding,),
+                const Text('My Courses:',   style: TextStyle(fontWeight: FontWeight.bold,),),
+                const SizedBox(height: defaultPadding,),
+
+                Center(
+                  child: MultiBlocListener(
+                    listeners: [
+                      BlocListener<StudentCoursesCubit, StudentCoursesState>(
+                        listener: (context, state) {
+                          if (state is StudentCoursesLoaded) {
+                            if (state.courses.isEmpty) {
+                              BlocProvider.of<StudentCoursesCubit>(context)
+                                  .getAllCourses();
+                            }
+                          }
+                        },
+                      ),
+                      BlocListener<StudentFuncationalitiesCubit,
+                          StudentFuncationalitiesState>(
+                        listener: (context, state) {
+                          if (state
+                              is StudentFuncationalitiesRegisteringCoursesLoaded) {
+                            BlocProvider.of<StudentCoursesCubit>(context)
+                                .getStudentCourses(widget.student);
+                          }
+                        },
+                      ),
+                    ],
+                    child: BlocBuilder<StudentCoursesCubit, StudentCoursesState>(
+                      builder: (context, state) {
+                        if (state is StudentCoursesToChooseLoaded) {
+                          return Container(
+                              child: registerCourseWidget(
+                                  widget.student, state.courses, width));
+                        } else if (state is StudentCoursesToChooseLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is StudentCoursesToChooseError) {
+                          return const Center(
+                            child: Text("error"),
+                          );
+                        }
+                        if (state is StudentCoursesLoaded) {
+                          List<CourseBox> courseBoxes = [];
+
+                          for (var course in state.courses) {
+                            courseBoxes.add(CourseBox(
+                              course: course,
+                              onTap: () {
+                                Navigator.pushNamed(context, insideCourseStudent,
+                                    arguments: [widget.student, course]);
+                              },
+                            ));
+                          }
+                          return Wrap(
+                            spacing: 20,
+                            runSpacing: 20,
+                            direction: Axis.horizontal,
+                            children: courseBoxes,
+                          );
+                        } else if (state is StudentCoursesLoading ||
+                            state is StudentCoursesInitial) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else {
+                          return const Center(child: Text("error"));
+                        }
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -162,6 +175,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
           .add(courseToBeSelectedContainer(course, 150, false, (selected) {
         if (selected) {
           coursesToBeRegistered.add(course);
+
           print(coursesToBeRegistered);
         } else {
           coursesToBeRegistered.remove(course);
@@ -179,22 +193,24 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
             children: courseContainers,
           ),
         ),
-        ElevatedButton(
-            onPressed: () {
-              if (coursesToBeRegistered.isNotEmpty) {
-                BlocProvider.of<StudentFuncationalitiesCubit>(context)
-                    .registerCoursesForAStudent(student, coursesToBeRegistered);
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (_) => const FunkyOverlay(
-                    message: "select courses to register",
-                  ),
-                );
-              }
-            },
-            child: const Text("Register"))
-      ],
+        ButtonWidget(
+          text: "Register",
+          onClicked: () {
+                if (coursesToBeRegistered.isNotEmpty) {
+                  BlocProvider.of<StudentFuncationalitiesCubit>(context)
+                      .registerCoursesForAStudent(student, coursesToBeRegistered);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const FunkyOverlay(
+                      message: "select courses to register",
+                    ),
+                  );
+                }
+              },
+
+    ),
+    ],
     );
   }
 }

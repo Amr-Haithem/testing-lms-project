@@ -7,6 +7,9 @@ import 'package:testing_project/constants/urls.dart';
 import 'package:testing_project/data/models/professor.dart';
 import 'package:testing_project/data/models/student.dart';
 import 'package:testing_project/presentation/freq_used_widgets/course_box.dart';
+import 'package:testing_project/presentation/freq_used_widgets/button_widget.dart';
+import 'package:testing_project/presentation/freq_used_widgets/bottom_sheet.dart';
+import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
 
 class ProfessorDashBoard extends StatefulWidget {
   final Professor professor;
@@ -35,10 +38,8 @@ class _ProfessorDashBoardState extends State<ProfessorDashBoard> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: darkGrey,
-          title: Center(child: Text('dashboard')),
-        ),
+        appBar: buildAppBar(context,"Dashboard"),
+
         body: SizedBox(
           width: double.infinity,
           child: Column(
