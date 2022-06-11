@@ -9,12 +9,9 @@ import 'package:flutter/material.dart';
 import 'course_box.dart';
 
 class EditableTextFormField extends StatefulWidget {
+  final Excersize excersize;
 
-final Excersize excersize;
-
-  const EditableTextFormField(
-      {Key? key, required this.excersize})
-      : super(key: key);
+  const EditableTextFormField({Key? key, required this.excersize});
 
   @override
   State<EditableTextFormField> createState() => _EditableTextFormFieldState();
@@ -24,12 +21,12 @@ class _EditableTextFormFieldState extends State<EditableTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: widget.key,
       decoration: const InputDecoration(
           labelStyle: TextStyle(
-            color: mainWhite,
-            fontSize: defaultPadding,
-          )
-      ),
+        color: mainWhite,
+        fontSize: defaultPadding,
+      )),
       initialValue: "${widget.excersize.question}",
       onChanged: (String? value) {
         widget.excersize.question = "${value}";

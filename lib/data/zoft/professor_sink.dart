@@ -9,7 +9,7 @@ class ProfessorSink {
       String userName, String password) async {
     return Future.delayed((Duration(seconds: 0)), () {
       return [
-        { 
+        {
           'user_name': 'shehab',
           'prof_id': 0,
           'password': 'sheba',
@@ -21,7 +21,6 @@ class ProfessorSink {
 
   Future<List<Map<String, Object?>>> getCoursesOfProfessor(
       Professor professor) async {
-        
     return Future.delayed((Duration(seconds: 0)), () {
       return [
         {
@@ -29,12 +28,6 @@ class ProfessorSink {
           'course_id': 0,
           'content': 'no content yet',
           'name': "vibration and waves"
-        },
-        {
-          'prof_id': 0,
-          'course_id': 1,
-          'content': 'no content yet',
-          'name': "Logic design"
         },
         {
           'prof_id': 0,
@@ -50,15 +43,12 @@ class ProfessorSink {
         }
       ];
     });
-    
   }
 
-  Future<List<Map<String, Object?>>> getCourseContent(
+  Future<String> getCourseContent(
       Professor professor, Course course) async {
     return Future.delayed((Duration(seconds: 0)), () {
-      return [
-        {'content': "no content yet"}
-      ];
+      return "no content yet";
     });
   }
 
@@ -66,22 +56,22 @@ class ProfessorSink {
     return Future.delayed((Duration(seconds: 0)), () {
       return [
         {
-          'course_id':0,
-          'ex_id':0,
-          'question':'set a question',
-          'answer':false
+          'course_id': 0,
+          'ex_id': 0,
+          'question': 'set a question',
+          'answer': false
         },
         {
-          'course_id':0,
-          'ex_id':1,
-          'question':'set a question',
-          'answer':false
+          'course_id': 0,
+          'ex_id': 1,
+          'question': 'set a question',
+          'answer': false
         },
         {
-          'course_id':0,
-          'ex_id':2,
-          'question':'set a question',
-          'answer':false
+          'course_id': 0,
+          'ex_id': 2,
+          'question': 'set a question',
+          'answer': false
         }
       ];
     });

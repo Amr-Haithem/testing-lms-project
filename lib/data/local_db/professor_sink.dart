@@ -15,6 +15,7 @@ class ProfessorSink {
 
   Future<List<Map<String, Object?>>> getCoursesOfProfessor(
       Professor professor) async {
+        
     Database db = await _lmsDB.database;
     return await db
         .query("Course", where: ''' prof_id = ${professor.id.toString()}''');

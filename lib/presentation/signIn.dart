@@ -33,6 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           children: [
             TextFormField(
+              key: Key("testFieldOfUserName"),
               onChanged: (val) {
                 userName = val;
               },
@@ -56,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             const SizedBox(height: 30),
             TextFormField(
+              key: Key('textFieldOfPassword'),
               onChanged: (val) {
                 password = val;
               },
@@ -77,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 return null;
               },
             ),
-          //  const SizedBox(height: 30)
+            //  const SizedBox(height: 30)
           ],
         ),
       ),
@@ -110,48 +112,49 @@ class _SignInScreenState extends State<SignInScreen> {
           if (state is AuthenticationInitial ||
               state is AuthenticationLoadingError) {
             return Scaffold(
-                // appBar: AppBar(
-                //   title: Center(child: const Text("Eng ASU LMS")),
-                //   backgroundColor: Colors.black,
-                // ),
+              // appBar: AppBar(
+              //   title: Center(child: const Text("Eng ASU LMS")),
+              //   backgroundColor: Colors.black,
+              // ),
 
-                body: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Wrap(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.center,
-                   runSpacing: defaultPadding,
-                    children: [
-                  // child: Wrap(
-                  //   direction: Axis.horizontal,
-                  //   spacing: 20,
-                  //   runSpacing: 0,
+              body: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.center,
+                  runSpacing: defaultPadding,
+                  children: [
+                    // child: Wrap(
+                    //   direction: Axis.horizontal,
+                    //   spacing: 20,
+                    //   runSpacing: 0,
 
                     // children: [
-                   //   SizedBox(height: defaultPadding),
+                    //   SizedBox(height: defaultPadding),
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: defaultPadding*4),
-                        child: Image.network('https://eng.asu.edu.eg/img/logo.png'),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: defaultPadding * 4),
+                      child:
+                          Image.network('https://eng.asu.edu.eg/img/logo.png'),
+                    ),
 
+                    _buildTextFields(),
 
-                      _buildTextFields(),
-
-                      ButtonWidget(
+                    ButtonWidget(
+                      key: Key("signInButton"),
                       onClicked: () async {
-                             // _lmsDB.deleteDatabase("lms.db");
-                              if (_formKey.currentState!.validate()) {
-                                BlocProvider.of<AuthenticationCubit>(context)
-                                    .authenticateUser(userName, password);
-                              }
-                            },
-                            text: 'Sign in',
+                        // _lmsDB.deleteDatabase("lms.db");
+                        if (_formKey.currentState!.validate()) {
+                          BlocProvider.of<AuthenticationCubit>(context)
+                              .authenticateUser(userName, password);
+                        }
+                      },
+                      text: 'Sign in',
                     ),
-                      ],
-                    ),
+                  ],
                 ),
-                );
+              ),
+            );
           } else {
             return const Scaffold(
                 body: Center(child: CircularProgressIndicator()));
@@ -161,4 +164,3 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
-

@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testing_project/BL/cubit/professor_functionalities_cubit/professor_functionalities_content/professor_functionalities_content_cubit.dart';
 import 'package:testing_project/BL/cubit/professor_functionalities_cubit/professor_functionalities_questions/professor_functionalities_questions_cubit.dart';
 import 'package:testing_project/constants/colors.dart';
+import 'package:testing_project/data/models/course.dart';
 import 'package:testing_project/data/models/excersize.dart';
 import 'package:testing_project/data/models/professor.dart';
 import 'package:testing_project/presentation/freq_used_widgets/button_widget.dart';
 import 'package:testing_project/presentation/freq_used_widgets/bottom_sheet.dart';
 import 'package:testing_project/presentation/freq_used_widgets/appbar_widget.dart';
-import '../../constants/measures.dart';
-import '../../data/models/course.dart';
+import '../../../constants/measures.dart';
 import 'package:testing_project/presentation/freq_used_widgets/querstion_card.dart';
 import 'package:testing_project/presentation/freq_used_widgets/editable_textformfield.dart';
 
@@ -28,15 +28,6 @@ class InsideCourseProfessor extends StatefulWidget {
 }
 
 class _InsideCourseProfessorState extends State<InsideCourseProfessor> {
-  @override
-  void initState() {
-    BlocProvider.of<ProfessorFunctionalitiesQuestionsCubit>(context)
-        .getCourseExcersizes(widget.course);
-    BlocProvider.of<ProfessorFunctionalitiesContentCubit>(context)
-        .getCourseContent(widget.professor, widget.course);
-    super.initState();
-  }
-
   String question1 = "Question 1";
   @override
   Widget build(BuildContext context) {
@@ -51,14 +42,14 @@ class _InsideCourseProfessorState extends State<InsideCourseProfessor> {
             const SizedBox(
               height: defaultPadding * 2,
             ),
-            ContentCard(
-                    context, widget.course, const Key('textFormFieldContentCard')),
-            //  SizedBox(height: defaultPadding*1.5,),
+
+            //course content
+            ContentCard(context, widget.course),
+
             const SizedBox(
               height: defaultPadding,
             ),
 
-            /////******************************//
             Center(
                 child: ButtonWidget(
               text: "Add course content",
@@ -69,80 +60,30 @@ class _InsideCourseProfessorState extends State<InsideCourseProfessor> {
               height: defaultPadding,
             ),
 
-            BlocBuilder<ProfessorFunctionalitiesQuestionsCubit,
-                    ProfessorFunctionalitiesQuestionsState>(
-                builder: (context, state) {
-              if (state is ProfessorFunctionalitiesQuestionsLoaded) {
-                state.excersizes.forEach((excersize) {
-                  QuestionCard(excersize: excersize);
-                });
-              }
-              //todo implement the ui of questions
-              return Padding(
-                padding: const EdgeInsets.all(defaultPadding / 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: const [
-                        Text(
-                          "Set questions",
-                          style: TextStyle(
-                            fontSize: defaultPadding * 1.2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: const [
-                        Text(
-                          "Set Answers",
-                          style: TextStyle(
-                            fontSize: defaultPadding * 1.2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              );
-            }),
-
             //  Container(),
 
             //
             QuestionCard(
+              key: const Key('questionCard1'),
               excersize: excersize1,
             ),
             QuestionCard(
+              key: const Key('questionCard2'),
               excersize: excersize2,
             ),
             QuestionCard(
+              key: const Key('questionCard3'),
               excersize: excersize3,
             ),
 
-            // // const SizedBox(height: defaultPadding,),
-            //
-            //  QuestionCard(excersize: ,),
-            //  //const SizedBox(height: defaultPadding,),
-            //
-            //  QuestionCard(course: widget.course, question_number: 3),
-
-            //  buildQuestion1(context,widget.course),
-
-            //  list of questions:
-
-            //      buildQuestion1(context,widget.course),
 
             const SizedBox(
               height: defaultPadding,
             ),
 
             Center(
-                child: ButtonWidget( 
-                  
+                child: ButtonWidget(
+                  key: const Key("submitQuestions"),
               text: "submit questions",
               onClicked: () {},
             )),
@@ -168,7 +109,7 @@ Widget buildQuestion1(BuildContext context, Course course) => TextFormField(
       excersize1.question = "${value}";
     });
 
-Widget ContentCard(BuildContext context, Course course, Key key) => Container(
+Widget ContentCard(BuildContext context, Course course) => Container(
       width: defaultPadding * 20,
       height: defaultPadding * 15,
       padding: const EdgeInsets.all(defaultPadding / 10),
@@ -185,7 +126,7 @@ Widget ContentCard(BuildContext context, Course course, Key key) => Container(
           borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
         ),
         child: TextFormField(
-          key: key,
+          key: Key('textFormFieldContentCard'), 
           decoration: const InputDecoration(
               labelText: "Course content",
               labelStyle: TextStyle(
